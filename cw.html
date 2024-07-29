@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Crawler</title>
+    <link rel="stylesheet" href="cw.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Domain Crawler</h1>
+        <form id="crawlForm">
+            <label for="url">Enter Domain:</label>
+            <input type="text" id="url" name="url" placeholder="example.com" required>
+            <br>
+            <label for="format">Select Format:</label>
+            <select id="format" name="format">
+                <option value="json">JSON</option>
+                <option value="markdown">Markdown</option>
+            </select>
+            <br>
+            <button type="submit">Crawl</button>
+        </form>
+        <h2>Result:</h2>
+        <pre id="result"></pre>
+    </div>
+    <script>
+        document.getElementById('crawlForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var url = document.getElementById('url').value;
+            var format = document.getElementById('format').value;
+            fetch(`/crawl?url=${encodeURIComponent(url)}&format=${format}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').textContent = data;
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Error: ' + error;
+                });
+        });
+    </script>
+</body>
+</html>
